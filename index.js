@@ -11,10 +11,10 @@ function quote(val) {
   return val;
 }
 
-function wkhtmltopdf(input, options, callback) {
+function weasyprint(input, options, callback) {
   if (!options) {
     options = {};
-  } else if (typeof options == 'function') {
+  } else if (typeof options === 'function') {
     callback = options;
     options = {};
   }
@@ -48,7 +48,7 @@ function wkhtmltopdf(input, options, callback) {
     Array.prototype.splice.apply(keys, spliceArgs);
   }
 
-  var args = [wkhtmltopdf.command];
+  var args = [weasyprint.command];
   if (!options.debug) {
     args.push('--quiet');
   }
@@ -91,7 +91,7 @@ function wkhtmltopdf(input, options, callback) {
 
   // show the command that is being run if debug opion is passed
   if (options.debug && !(options instanceof Function)) {
-    console.log('[node-wkhtmltopdf] [debug] [command] ' + args.join(' '));
+    console.log('[node-weasyprint] [debug] [command] ' + args.join(' '));
   }
 
   if (process.platform === 'win32') {
@@ -100,9 +100,9 @@ function wkhtmltopdf(input, options, callback) {
     var child = spawn('/bin/sh', ['-c', args.join(' ') + ' | cat ; exit ${PIPESTATUS[0]}']);
   } else {
     // this nasty business prevents piping problems on linux
-    // The return code should be that of wkhtmltopdf and not of cat
+    // The return code should be that of weasyprint and not of cat
     // http://stackoverflow.com/a/18295541/1705056
-    var child = spawn(wkhtmltopdf.shell, ['-c', args.join(' ') + ' | cat ; exit ${PIPESTATUS[0]}']);
+    var child = spawn(weasyprint.shell, ['-c', args.join(' ') + ' | cat ; exit ${PIPESTATUS[0]}']);
   }
 
   var stream = child.stdout;
@@ -110,7 +110,7 @@ function wkhtmltopdf(input, options, callback) {
   // call the callback with null error when the process exits successfully
   child.on('exit', function(code) {
     if (code !== 0) {
-      stderrMessages.push('wkhtmltopdf exited with code ' + code);
+      stderrMessages.push('weasyprint exited with code ' + code);
       handleError(stderrMessages);
     } else if (callback) {
       callback(null, stream); // stream is child.stdout
@@ -166,12 +166,12 @@ function wkhtmltopdf(input, options, callback) {
     if (options.debug instanceof Function) {
       options.debug(data);
     } else if (options.debug) {
-      console.log('[node-wkhtmltopdf] [debug] ' + data.toString());
+      console.log('[node-weasyprint] [debug] ' + data.toString());
     }
   });
 
   if (options.debugStdOut && !output) {
-    throw new Error('debugStdOut may not be used when wkhtmltopdf\'s output is stdout');
+    throw new Error('debugStdOut may not be used when weasyprint\'s output is stdout');
   }
 
   if (options.debugStdOut && output) {
@@ -179,7 +179,7 @@ function wkhtmltopdf(input, options, callback) {
       if (options.debug instanceof Function) {
         options.debug(data);
       } else if (options.debug) {
-        console.log('[node-wkhtmltopdf] [debugStdOut] ' + data.toString());
+        console.log('[node-weasyprint] [debugStdOut] ' + data.toString());
       }
     });
   }
@@ -197,6 +197,6 @@ function wkhtmltopdf(input, options, callback) {
   return stream;
 }
 
-wkhtmltopdf.command = 'wkhtmltopdf';
-wkhtmltopdf.shell = '/bin/bash';
-module.exports = wkhtmltopdf;
+weasyprint.command = 'weasyprint';
+weasyprint.shell = '/bin/bash';
+module.exports = weasyprint;
