@@ -1,7 +1,7 @@
 {
-  "name": "wkhtmltopdf",
+  "name": "weasyprint",
   "version": "0.3.4",
-  "description": "A wrapper for the wkhtmltopdf HTML to PDF converter using WebKit",
+  "description": "A wrapper for the weasyprint HTML to PDF converter using WebKit",
   "author": {
     "name": "Devon Govett",
     "email": "devongovett@gmail.com",
@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/devongovett/node-wkhtmltopdf.git"
+    "url": "https://github.com/devongovett/node-weasyprint.git"
   },
   "scripts": {
     "test": "jasmine"
   },
-  "bugs": "http://github.com/devongovett/node-wkhtmltopdf/issues",
+  "bugs": "http://github.com/devongovett/node-weasyprint/issues",
   "devDependencies": {
     "express": "^4.13.3",
     "jasmine": "^2.3.2",
